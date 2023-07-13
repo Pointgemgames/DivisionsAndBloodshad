@@ -9,18 +9,22 @@ public class Inventory : MonoBehaviour
     public GameObject slotModel;
     public Chest openedChest = null;
     public int maxSize = 20;
-    public int maxStackSize = 5;
     public bool isInitialized { get; private set; }
     
     GameObject baseItems;
     Image list;
     AudioSource soundEffect;
+    Image equippedWeaponImage;
+    Text equippedWeaponInfo;
     GameController gameController;
 
     void Start()
     {
         gameController = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>();
         list = gameController.FindCanvas("InventoryList")?.GetComponent<Image>();
+        equippedWeaponImage = gameController.FindCanvas("ItemSprite")?.GetComponent<Image>();
+        equippedWeaponInfo = gameController.FindCanvas("ItemInfo")?.GetComponent<Text>();
+
         soundEffect = list?.GetComponent<AudioSource>();
         
         baseItems = GameObject.FindGameObjectWithTag("BaseItems");
@@ -119,9 +123,9 @@ public class Inventory : MonoBehaviour
             List<GameObject> slots = new List<GameObject>(GameObject.FindGameObjectsWithTag("Slot"));
             PlayerController player = GetComponent<PlayerController>();
         
-            if (player.equipedTool != null && player.equipedTool.name == storedItem.name)
+            if (player.equippedTool != null && player.equippedTool.name == storedItem.name)
             {
-                player.equipedTool = null;
+                player.equippedTool = null;
             }
         }
 
@@ -137,6 +141,17 @@ public class Inventory : MonoBehaviour
             PlayerController player = GetComponent<PlayerController>();
             GameObject baseItemObj = baseItems.transform.Find(item.name).gameObject;
             Item baseItem = baseItemObj.GetComponent<Item>();
+
+            Color textColor = 
+                baseItem.rarity >= 70 ? Color.gray :
+                baseItem.rarity >= 60 ? Color.green :
+                baseItem.rarity >= 50 ? Color.blue :
+                baseItem.rarity >= 30 ? new Color(148, 0, 211) :
+                new Color(255, 165, 0);
+
+            equippedWeaponImage.sprite = baseItem.info.sprite;
+            equippedWeaponInfo.text = storedItem.name;
+            equippedWeaponInfo.color = textColor;
 
             player.EquipWeapon(baseItem);
         }
@@ -168,7 +183,7 @@ public class Inventory : MonoBehaviour
 
     public void OpenOrClose()
     {
-        if (!list.transform.parent.gameObject.active) Open();
+        if (!list.transform.parent.gameObject.active && !gameController.isPaused) Open();
         else Close();
     }
 
@@ -181,6 +196,6 @@ public class Inventory : MonoBehaviour
     public void UnequipItem()
     {
         PlayerController player = GetComponent<PlayerController>();
-        player.equipedTool = null;
+        player.equippedTool = null;
     }
 }

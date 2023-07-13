@@ -25,7 +25,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2192863475073817925}
   m_LocalRotation: {x: -0, y: -0, z: -0.7071068, w: 0.7071068}
-  m_LocalPosition: {x: -0.22, y: 0.08, z: 0.07}
+  m_LocalPosition: {x: -0.256, y: -0.114, z: 0.07}
   m_LocalScale: {x: 1, y: 1.0644, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -52,7 +52,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -95,9 +95,10 @@ GameObject:
   - component: {fileID: 2724942986649439025}
   - component: {fileID: 2724942986649438991}
   - component: {fileID: 2724942986649438990}
+  - component: {fileID: 2577003096841333806}
   m_Layer: 0
   m_Name: adaga (1)
-  m_TagString: Untagged
+  m_TagString: Weapon
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -137,7 +138,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -195,6 +196,23 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.9, y: 5.0288343}
   m_EdgeRadius: 0
+--- !u!114 &2577003096841333806
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2724942986649439024}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 56863ba6f1d9ee14da3b1a24e23fda8d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  damage: 50
+  isLongRange: 0
+  animationTime: 0.32
+  delay: 0.12
+  playerItem: {fileID: 2724942987465388674}
 --- !u!1 &2724942986753076615
 GameObject:
   m_ObjectHideFlags: 0
@@ -242,7 +260,7 @@ GameObject:
   - component: {fileID: 2724942986925600578}
   - component: {fileID: 2724942986925600577}
   - component: {fileID: 2724942986925600607}
-  - component: {fileID: 2724942986925600604}
+  - component: {fileID: 4740806860388165186}
   m_Layer: 0
   m_Name: player
   m_TagString: Player
@@ -282,11 +300,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: efaa1880149ba2247bf55ceb2b211df1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  equipedTool: {fileID: 0}
+  equippedTool: {fileID: 0}
   health: 100
+  speed: 6.5
+  rotationSpeed: 2
   anim: {fileID: 0}
   playerArm: {fileID: 6599781388361802130}
   armAnim: {fileID: 5360130071993794441}
+  isAttacking: 0
 --- !u!50 &2724942986925600579
 Rigidbody2D:
   serializedVersion: 4
@@ -299,7 +320,7 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 1
+  m_Mass: 1000
   m_LinearDrag: 0
   m_AngularDrag: 0.05
   m_GravityScale: 0
@@ -341,7 +362,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.011385441, y: 0.11385581}
+  m_Offset: {x: 0.011385441, y: 0.006125927}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -352,7 +373,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 2.1613293, y: 1.2277117}
+  m_Size: {x: 2.1613293, y: 1.0122519}
   m_EdgeRadius: 0
 --- !u!114 &2724942986925600607
 MonoBehaviour:
@@ -367,12 +388,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   storedItems: []
+  equippedWeaponSprite: {fileID: 0}
+  equippedWeaponRarity: {fileID: 0}
   uiListType: 
   slotModel: {fileID: 6796989044555645141, guid: 9373e08f480392a47b1e44470b3e925b, type: 3}
   openedChest: {fileID: 0}
   maxSize: 30
   maxStackSize: 5
---- !u!114 &2724942986925600604
+--- !u!114 &4740806860388165186
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -381,7 +404,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 2724942986925600580}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 76094fe74a5aea34393aaf26f8f742d3, type: 3}
+  m_Script: {fileID: 11500000, guid: 521eb93a2d227324c9be0abf75b0aa48, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &2724942987004976442
@@ -436,7 +459,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -520,7 +543,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -577,7 +600,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2724942987371188434}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.188, z: -3.23}
+  m_LocalPosition: {x: 0, y: 0, z: -3.23}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -604,7 +627,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -661,7 +684,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2724942987465388674}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.14, y: 0, z: -3.13}
+  m_LocalPosition: {x: -0.14, y: -0.185, z: -3.13}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -744,7 +767,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -828,7 +851,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -885,7 +908,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2724942988408856315}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.14, y: 0, z: -3.13}
+  m_LocalPosition: {x: -0.14, y: -0.185, z: -3.13}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -941,7 +964,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2724942988716558736}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.14, y: 0, z: -3.13}
+  m_LocalPosition: {x: -0.14, y: -0.186, z: -3.13}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -997,7 +1020,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3454221800614988876}
   m_LocalRotation: {x: -0, y: -0, z: -0.28075475, w: 0.95977956}
-  m_LocalPosition: {x: -0.43, y: 0.56, z: 0.09}
+  m_LocalPosition: {x: -0.43, y: 0.405, z: 0.09}
   m_LocalScale: {x: 1, y: 1.024, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1024,7 +1047,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1067,9 +1090,10 @@ GameObject:
   - component: {fileID: 7040655497784345736}
   - component: {fileID: 9045813394910767858}
   - component: {fileID: 7141622326574248662}
+  - component: {fileID: 8274046136762183240}
   m_Layer: 0
   m_Name: maosocohomem
-  m_TagString: Untagged
+  m_TagString: Weapon
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1109,7 +1133,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1154,7 +1178,7 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0.09957568}
+  m_Offset: {x: -0.69342357, y: 0.098837644}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -1165,8 +1189,25 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.4, y: 1.0008487}
+  m_Size: {x: 1.7868472, y: 0.99937266}
   m_EdgeRadius: 0
+--- !u!114 &8274046136762183240
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3904650780696400538}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 56863ba6f1d9ee14da3b1a24e23fda8d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  damage: 15
+  isLongRange: 0
+  animationTime: 0.19
+  delay: 0.05
+  playerItem: {fileID: 6599781388361802130}
 --- !u!1 &5052909138423839370
 GameObject:
   m_ObjectHideFlags: 0
@@ -1219,7 +1260,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1303,7 +1344,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1387,7 +1428,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1471,7 +1512,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1555,7 +1596,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1639,7 +1680,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1682,9 +1723,10 @@ GameObject:
   - component: {fileID: 5052909139671350720}
   - component: {fileID: 5052909139671350722}
   - component: {fileID: 5052909139671350723}
+  - component: {fileID: 547989204546470461}
   m_Layer: 0
   m_Name: adaga (1)
-  m_TagString: Untagged
+  m_TagString: Weapon
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1724,7 +1766,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1782,6 +1824,23 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1.386805, y: 5.0288343}
   m_EdgeRadius: 0
+--- !u!114 &547989204546470461
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5052909139671350721}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 56863ba6f1d9ee14da3b1a24e23fda8d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  damage: 65
+  isLongRange: 0
+  animationTime: 0.4
+  delay: 0.2
+  playerItem: {fileID: 2724942988716558736}
 --- !u!1 &5052909139714331885
 GameObject:
   m_ObjectHideFlags: 0
@@ -1834,7 +1893,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1877,9 +1936,10 @@ GameObject:
   - component: {fileID: 5052909139977299782}
   - component: {fileID: 5052909139977299832}
   - component: {fileID: 5052909139977299833}
+  - component: {fileID: 2666296558887884706}
   m_Layer: 0
   m_Name: adaga (1)
-  m_TagString: Untagged
+  m_TagString: Weapon
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1919,7 +1979,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1977,6 +2037,23 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.9, y: 4.803313}
   m_EdgeRadius: 0
+--- !u!114 &2666296558887884706
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5052909139977299783}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 56863ba6f1d9ee14da3b1a24e23fda8d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  damage: 60
+  isLongRange: 0
+  animationTime: 0.35
+  delay: 0.18
+  playerItem: {fileID: 2724942988408856315}
 --- !u!1 &5052909140324315469
 GameObject:
   m_ObjectHideFlags: 0
@@ -2029,7 +2106,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -2152,7 +2229,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6599781388361802130}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.14, y: 0, z: -3.13}
+  m_LocalPosition: {x: -0.166, y: 0, z: -3.13}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:

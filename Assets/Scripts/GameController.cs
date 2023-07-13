@@ -128,12 +128,15 @@ public class GameController : MonoBehaviour
 
     public void PauseGame()
     {
+        Time.timeScale = 0;
         isPaused = true;
     }
 
     public void ResumeGame()
     {
         playMenu.SetActive(false);
+
+        Time.timeScale = 1;
         isPaused = false;
     }
 
@@ -213,8 +216,10 @@ public class GameController : MonoBehaviour
     public void LoadCheckpoint()
     {
         currentGame = checkpoint;
+        currentGame.player.health = 100;
 
         GameObject player = Instantiate(playerModel, defaultSpawnPosition, Quaternion.identity);
+        PlayerController playerController = player.GetComponent<PlayerController>();
         Inventory inventory = player.GetComponent<Inventory>();
 
         inventory.storedItems = currentGame.player.items;

@@ -18,6 +18,7 @@ TagManager:
   - ChestUI
   - RaycastText
   - fechadura
+  - Enemy
   layers:
   - Default
   - TransparentFX

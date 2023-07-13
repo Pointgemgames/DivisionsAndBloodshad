@@ -4,16 +4,19 @@ using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
-    public Item equipedTool = null;
+    public Item equippedTool = null;
+    public static float maxHealth = 100;
     public float health = maxHealth;
+    public float speed;
+    public float rotationSpeed;
     public Animator anim;
     public GameObject playerArm;
     public Animator armAnim;
+    public bool isAttacking = false;
+    public bool isRespawning = false;
 
-    static float maxHealth = 100;
-    float speed = 7f;
-    bool isAttacking = false;
     GameController gameController;
+    Inventory inventory;
     Vector2 movement;
     Rigidbody2D rig;
     GameObject dieScreen;
@@ -25,6 +28,7 @@ public class PlayerController : MonoBehaviour
 
         anim = GetComponent<Animator>();
         rig = GetComponent<Rigidbody2D>();
+        inventory = GetComponent<Inventory>();
 
         dieScreen = gameController.FindCanvas("DieUI");
         dieCountdown = dieScreen?.transform.Find("Background").Find("Countdown").GetComponent<Text>();
@@ -33,9 +37,9 @@ public class PlayerController : MonoBehaviour
     IEnumerator OnDie()
     {
         dieScreen.SetActive(true);
-        health = maxHealth;
+        isRespawning = true;
 
-        int i = 5;
+        int i = 3;
         while (i > 0)
         {
             dieCountdown.text = $"Respawning in {i} seconds...";
@@ -45,11 +49,14 @@ public class PlayerController : MonoBehaviour
 
         dieScreen.SetActive(false);
         gameController.LoadCheckpoint();
+
+        health = maxHealth;
+        isRespawning = false;
     }
 
     public void TakeDamage(float damage)
     {
-        if (!gameController.isPaused)
+        if (!gameController.isPaused && !isRespawning)
         {
             health -= damage;
             if (health <= 0)
@@ -59,64 +66,46 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    IEnumerator UseTool()
+    void UseTool()
     {
-        isAttacking = true;
-
-        if (!equipedTool)
+        if (!equippedTool)
         {
-            playerArm.SetActive(true);
-            armAnim.Play("Attack", -1, 0f);
-
-            yield return new WaitForSeconds(0.18f);
-            playerArm.SetActive(false);
-
-            yield return new WaitForSeconds(.05f);
-            isAttacking = false;
+            Weapon punch = playerArm.transform.Find("maosocohomem").GetComponent<Weapon>();
+            StartCoroutine(punch.PlayerAttack());
         }
 
         else
         {
-            equipedTool.item.SetActive(true);
-
-            Animator toolAnim = equipedTool.item.GetComponent<Animator>();
-            toolAnim.Play("Attack", -1, 0f);
-
-            yield return new WaitForSeconds(equipedTool.animationTime);
-            
-            if (equipedTool != null)
+            if (equippedTool.info.type == "Weapon")
             {
-                equipedTool.item.SetActive(false);
+                Weapon weapon = equippedTool.playerItem.transform.Find("espada").Find("adaga (1)").GetComponent<Weapon>();
+                StartCoroutine(weapon.PlayerAttack());
             }
-
-            yield return new WaitForSeconds(equipedTool.attackDelay);
-            isAttacking = false;
         }
-
     }
 
     void Update()
     {
-        float horizontalInput = Input.GetAxisRaw("Horizontal");
-        float verticalInput = Input.GetAxisRaw("Vertical");
+        float horizontal = Input.GetAxisRaw("Horizontal");
+        float vertical = Input.GetAxisRaw("Vertical");
 
-        anim.SetBool("Moving", (horizontalInput != 0 || verticalInput != 0) && !isAttacking && !gameController.isPaused);
-        movement = new Vector2(horizontalInput, verticalInput).normalized;
-
-        if (movement != Vector2.zero && !gameController.isPaused)
-        {
-            transform.rotation = Quaternion.LookRotation(Vector3.forward, movement);
-        }
+        movement = new Vector2(horizontal, vertical).normalized;
+        anim.SetBool("Moving", movement != Vector2.zero && !isAttacking && !gameController.isPaused);
 
         if (Input.GetKeyUp(KeyCode.Tab))
         {
-            Inventory inventory = GetComponent<Inventory>();
             inventory.OpenOrClose();
+        }
+
+        if (movement != Vector2.zero && !gameController.isPaused)
+        {
+            Vector2 rotation = new Vector2(horizontal, vertical) * rotationSpeed * Time.timeScale;
+            transform.rotation = Quaternion.LookRotation(Vector3.forward, rotation);
         }
 
         if (Input.GetMouseButtonDown(0) && !isAttacking && !gameController.isPaused)
         {
-            StartCoroutine(UseTool());
+            UseTool();
         }
     }
 
@@ -129,12 +118,12 @@ public class PlayerController : MonoBehaviour
 
     public void EquipWeapon(Item tool)
     {
-        if (equipedTool != null)
+        if (equippedTool != null)
         {
-            equipedTool.item.SetActive(false);
+            equippedTool.playerItem.SetActive(false);
             isAttacking = false;
         }
 
-        equipedTool = (equipedTool == tool) ? null : tool;
+        equippedTool = (equippedTool == tool) ? null : tool;
     }
 }
